@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.habitrouter.userservice.model.User;;;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{ //user tablosuyla çalış id tipi long
+public interface UserRepository extends JpaRepository<User, Long>{ //work on user table, id type long
 
     Optional<User> findByEmail(String email);
 }

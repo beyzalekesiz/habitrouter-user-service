@@ -3,8 +3,9 @@ package com.habitrouter.userservice.dto;
 import lombok.Data;
 
 @Data
-public class LoginRequest {
+public class RegisterDto {
     
     private String email;
     private String password;
+    private String name;
 }
