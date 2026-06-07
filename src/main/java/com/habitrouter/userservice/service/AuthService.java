@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.habitrouter.userservice.dto.RegisterDto;
 import com.habitrouter.userservice.model.User;
 import com.habitrouter.userservice.repository.UserRepository;
+import com.habitrouter.userservice.exception.EmailAlreadyExistsException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +25,7 @@ public class AuthService {
     public User register(RegisterDto registerDto) {
 
         if (userRepository.findByEmail(registerDto.getEmail()).isPresent()) {
-            throw new RuntimeException("This email is already registered.");
+            throw new EmailAlreadyExistsException("This email is already registered.");
         }
 
         User user = new User();
