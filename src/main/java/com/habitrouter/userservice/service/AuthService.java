@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.habitrouter.userservice.dto.LoginDto;
 import com.habitrouter.userservice.dto.RegisterDto;
 import com.habitrouter.userservice.model.User;
 import com.habitrouter.userservice.repository.UserRepository;
@@ -21,6 +22,7 @@ public class AuthService {
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public User register(RegisterDto registerDto) {
 
@@ -35,6 +37,19 @@ public class AuthService {
         user.setCreatedAt(LocalDateTime.now());
 
         return userRepository.save(user);
+    }
+
+    public String login (LoginDto loginDto) {
+        //check if user exists
+        User user = userRepository
+                    .findByEmail(loginDto.getEmail())
+                    .orElseThrow(()-> new RuntimeException("User not found."));
+        //check password
+        //matches: take the untouched password, hash it, compare with the given hashed password
+        if (!passwordEncoder.matches( loginDto.getPassword(), user.getPassword())){ //normal password 1st, hashed password 2nd
+            throw new RuntimeException("Incorrect password.");
+        }
+        return jwtService.generateToken(user.getEmail());
     }
 
 }

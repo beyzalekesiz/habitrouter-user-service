@@ -2,13 +2,16 @@
 package com.habitrouter.userservice.controller;
 
 import org.springframework.http.ResponseEntity; 
-import org.springframework.http.HttpStatus; 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.habitrouter.userservice.service.AuthService;
+import com.habitrouter.userservice.dto.LoginDto;
 import com.habitrouter.userservice.dto.RegisterDto;
 import com.habitrouter.userservice.model.User;
 
@@ -26,4 +29,11 @@ public class AuthController {
         User registeredUser = authService.register(registerDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
     }
+
+    //return token as response
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.login(loginDto));
+    }
+
 }
